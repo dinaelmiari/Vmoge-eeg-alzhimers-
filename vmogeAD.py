@@ -1,42 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-VMoGE v7 — Final Pipeline (Supervisor-Revised)
-===============================================
-EEG-Based Alzheimer's Detection | Amsterdam UMC Masters Thesis
-
-CHANGES FROM v6 (protype__6_.py)
-----------------------------------
-[S1] Generate to match HC exactly (supervisor recommendation 1)
-     n_synth = max(0, n_hc_train - n_ad_train)
-     This eliminates the class imbalance that caused Fold 2 collapse (−38pp sens).
-     The 800-epoch cap is removed entirely.
-
-[S2] Save synthetic epochs per fold (supervisor recommendation 2)
-     Each fold saves: synth_fold{N}_X.npy  synth_fold{N}_y.npy
-     → never lose generated data if job crashes at fold 4/5.
-
-[S3] Patient-level evaluation via soft voting (supervisor recommendation 3)
-     Soft voting: mean AD probability across all patient epochs.
-     Final confusion matrix and all metrics at the PATIENT level (44 cells max).
-     Epoch-level metrics also kept for comparison.
-     Reference: CRCC (2025) arxiv 2602.19138; LEAD (2025) arxiv 2502.01678
-
-[S4] One global baseline (supervisor recommendation 4)
-     A single EEGNet is trained once on ALL training data (all 5 folds combined)
-     using the full dataset minus a held-out validation set.
-     This is reported alongside the per-fold augmented results.
-     Per-fold baselines are also kept for honest CV comparison.
-
-[S5] Comprehensive thesis plots (new)
-     After all folds: ROC curves, PSD comparison, confusion matrices (epoch + patient),
-     fold-by-fold ΔAUC bar chart, latent space t-SNE, generation quality per fold.
-
-NOTE ON BASELINE INSTABILITY:
-     The high fold-to-fold baseline variance (AUC std ~6.5pp) you observed is a
-     FINDING, not a bug. With N=44 subjects, 5-fold test sets have only ~9 patients.
-     Report it honestly: "baseline AUC varied 66–80% across folds, reflecting the
-     limited statistical power of the 44-subject ds004504 dataset."
-"""
 
 # =============================================================================
 # CELL 1 — IMPORTS
@@ -62,7 +25,7 @@ from sklearn.metrics import (roc_auc_score, f1_score, confusion_matrix,
                               roc_curve, auc as sklearn_auc)
 
 # =============================================================================
-# CELL 2 — CONFIGURATION  ★ edit paths here ★
+# CELL 2 — CONFIGURATION  
 # =============================================================================
 IS_COLAB = False
 
@@ -218,7 +181,7 @@ def build_adjacency(device=DEVICE):
 ADJ = build_adjacency()
 
 # =============================================================================
-# CELL 6 — MODEL ARCHITECTURES (unchanged from v6)
+# CELL 6 — MODEL ARCHITECTURES 
 # =============================================================================
 
 class EEGNet(nn.Module):
@@ -571,7 +534,7 @@ def train_vmoge(X_ad_fold, X_all_fold, y_all_fold, seed=42):
     return encoder,diff_dec,full_mean,full_std,Z_ad,sigma_ad,warmup_history,joint_diff_history
 
 # =============================================================================
-# CELL 11 — [S1] GENERATION: MATCH HC COUNT (no cap)
+# CELL 11 — [S1] GENERATION: MATCH HC COUNT 
 # =============================================================================
 @torch.no_grad()
 def generate_synthetic_ad(encoder, diff_dec, full_mean, full_std, Z_ad, sigma_ad, n_samples):
@@ -678,7 +641,7 @@ def evaluate_with_fn_profile(model, X_te, y_te):
     return m, y_pred, y_prob
 
 # =============================================================================
-# CELL 14 — [S5] THESIS PLOTS
+# CELL 14 — THESIS PLOTS
 # =============================================================================
 def save_all_plots(fold_results, all_roc_data, global_baseline_results=None):
     """Generate all thesis-quality figures and save to PLOTS_DIR."""
@@ -1053,7 +1016,7 @@ def save_all_plots(fold_results, all_roc_data, global_baseline_results=None):
     log.info(f"\n  All plots saved to: {PLOTS_DIR}")
 
 # =============================================================================
-# CELL 15 — [S4] GLOBAL BASELINE (trained once on all subjects)
+# CELL 15 —  GLOBAL BASELINE (trained once on all subjects)
 # =============================================================================
 def train_global_baseline(X_all, y_all, sub_all):
     """
