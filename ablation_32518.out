@@ -1,0 +1,218 @@
+Forcing execution of run_ablation()...
+Device: cuda
+SAVE_DIR:  /scratch/delmiari/thesisproject/processed
+SYNTH_DIR: /scratch/delmiari/thesisproject/pipeline_results/synthetic_epochs
+2026-06-15 14:23:33,492 | Loading data...
+2026-06-15 14:23:40,956 | Data: (36996, 19, 1000) | HC=24068 | AD=12928
+2026-06-15 14:23:40,960 | 
+=================================================================
+2026-06-15 14:23:40,960 |   FOLD 1 / 5
+2026-06-15 14:23:40,960 | =================================================================
+2026-06-15 14:23:42,624 |   Train: 23771 (14291 HC, 9480 AD) | Val: 5767 | Test: 7458
+2026-06-15 14:23:43,247 |   Loaded synthetic: (4811, 19, 1000) | all AD=True
+2026-06-15 14:23:48,570 | 
+  ── BL ────────────────────────────────────────
+2026-06-15 14:23:48,812 |   [BL] HC:0.832 AD:3.761 | n_HC=14291 n_AD=9480
+2026-06-15 14:25:25,811 |   [BL] Early stop ep 23
+2026-06-15 14:25:27,798 |   Youden t* = 0.1471  (sens=85.2% spec=60.2% at this threshold on val set)
+2026-06-15 14:25:27,808 |   [BL thr=0.500] Epoch:   AUC=72.9% Sens=43.4% Spec=80.6%
+2026-06-15 14:25:27,808 |   [BL thr=0.500] Patient: AUC=94.4% Sens=33.3% Spec=100.0%
+2026-06-15 14:25:27,817 |   [BL thr=0.147] Epoch:   AUC=72.9% Sens=95.4% Spec=32.4%
+2026-06-15 14:25:27,817 |   [BL thr=0.147] Patient: AUC=94.4% Sens=100.0% Spec=16.7%
+2026-06-15 14:25:27,817 | 
+  ── AUG ────────────────────────────────────────
+2026-06-15 14:25:27,824 |   [AUG] HC:1.000 AD:3.000 | n_HC=14291 n_AD=14291
+2026-06-15 14:28:14,434 |   [AUG] Early stop ep 34
+2026-06-15 14:28:16,332 |   Youden t* = 0.5624  (sens=91.1% spec=85.1% at this threshold on val set)
+2026-06-15 14:28:16,341 |   [AUG thr=0.500] Epoch:   AUC=87.2% Sens=91.7% Spec=65.9%
+2026-06-15 14:28:16,341 |   [AUG thr=0.500] Patient: AUC=100.0% Sens=100.0% Spec=83.3%
+2026-06-15 14:28:16,350 |   [AUG thr=0.562] Epoch:   AUC=87.2% Sens=86.1% Spec=73.4%
+2026-06-15 14:28:16,350 |   [AUG thr=0.562] Patient: AUC=100.0% Sens=100.0% Spec=100.0%
+2026-06-15 14:28:16,350 | 
+  ── TSTR ────────────────────────────────────────
+2026-06-15 14:28:16,356 |   [TSTR] HC:0.668 AD:5.956 | n_HC=14291 n_AD=4811
+2026-06-15 14:28:54,909 |   [TSTR] Early stop ep 11
+2026-06-15 14:28:56,877 |   Youden t* = 0.0569  (sens=75.9% spec=78.3% at this threshold on val set)
+2026-06-15 14:28:56,886 |   [TSTR thr=0.500] Epoch:   AUC=58.6% Sens=1.4% Spec=99.8%
+2026-06-15 14:28:56,886 |   [TSTR thr=0.500] Patient: AUC=66.7% Sens=0.0% Spec=100.0%
+2026-06-15 14:28:56,894 |   [TSTR thr=0.057] Epoch:   AUC=58.6% Sens=34.7% Spec=77.9%
+2026-06-15 14:28:56,894 |   [TSTR thr=0.057] Patient: AUC=66.7% Sens=33.3% Spec=100.0%
+2026-06-15 14:28:56,895 | 
+  Saved → /scratch/delmiari/thesisproject/pipeline_results/ablation_results.json
+2026-06-15 14:28:56,895 | 
+=================================================================
+2026-06-15 14:28:56,895 |   FOLD 2 / 5
+2026-06-15 14:28:56,895 | =================================================================
+2026-06-15 14:28:59,544 |   Train: 23238 (15959 HC, 7279 AD) | Val: 5726 | Test: 8032
+2026-06-15 14:29:00,677 |   Loaded synthetic: (8680, 19, 1000) | all AD=True
+2026-06-15 14:29:07,127 | 
+  ── BL ────────────────────────────────────────
+2026-06-15 14:29:07,257 |   [BL] HC:0.728 AD:4.789 | n_HC=15959 n_AD=7279
+2026-06-15 14:30:08,448 |   [BL] Early stop ep 15
+2026-06-15 14:30:10,405 |   Youden t* = 0.5935  (sens=85.9% spec=76.8% at this threshold on val set)
+2026-06-15 14:30:10,415 |   [BL thr=0.500] Epoch:   AUC=73.0% Sens=55.9% Spec=83.9%
+2026-06-15 14:30:10,415 |   [BL thr=0.500] Patient: AUC=77.8% Sens=66.7% Spec=100.0%
+2026-06-15 14:30:10,423 |   [BL thr=0.593] Epoch:   AUC=73.0% Sens=45.2% Spec=90.5%
+2026-06-15 14:30:10,423 |   [BL thr=0.593] Patient: AUC=77.8% Sens=33.3% Spec=100.0%
+2026-06-15 14:30:10,423 | 
+  ── AUG ────────────────────────────────────────
+2026-06-15 14:30:10,479 |   [AUG] HC:1.000 AD:3.000 | n_HC=15959 n_AD=15959
+2026-06-15 14:32:04,806 |   [AUG] Early stop ep 21
+2026-06-15 14:32:06,981 |   Youden t* = 0.6265  (sens=88.1% spec=87.4% at this threshold on val set)
+2026-06-15 14:32:06,990 |   [AUG thr=0.500] Epoch:   AUC=73.9% Sens=45.3% Spec=89.8%
+2026-06-15 14:32:06,990 |   [AUG thr=0.500] Patient: AUC=77.8% Sens=66.7% Spec=100.0%
+2026-06-15 14:32:06,998 |   [AUG thr=0.626] Epoch:   AUC=73.9% Sens=27.2% Spec=96.2%
+2026-06-15 14:32:06,998 |   [AUG thr=0.626] Patient: AUC=77.8% Sens=0.0% Spec=100.0%
+2026-06-15 14:32:06,998 | 
+  ── TSTR ────────────────────────────────────────
+2026-06-15 14:32:07,005 |   [TSTR] HC:0.772 AD:4.258 | n_HC=15959 n_AD=8680
+2026-06-15 14:32:55,510 |   [TSTR] Early stop ep 11
+2026-06-15 14:32:57,500 |   Youden t* = 0.0399  (sens=53.8% spec=78.1% at this threshold on val set)
+2026-06-15 14:32:57,509 |   [TSTR thr=0.500] Epoch:   AUC=43.9% Sens=0.1% Spec=100.0%
+2026-06-15 14:32:57,509 |   [TSTR thr=0.500] Patient: AUC=38.9% Sens=0.0% Spec=100.0%
+2026-06-15 14:32:57,518 |   [TSTR thr=0.040] Epoch:   AUC=43.9% Sens=18.8% Spec=73.7%
+2026-06-15 14:32:57,518 |   [TSTR thr=0.040] Patient: AUC=38.9% Sens=0.0% Spec=83.3%
+2026-06-15 14:32:57,519 | 
+  Saved → /scratch/delmiari/thesisproject/pipeline_results/ablation_results.json
+2026-06-15 14:32:57,519 | 
+=================================================================
+2026-06-15 14:32:57,519 |   FOLD 3 / 5
+2026-06-15 14:32:57,519 | =================================================================
+2026-06-15 14:33:00,215 |   Train: 23210 (16474 HC, 6736 AD) | Val: 6153 | Test: 7633
+2026-06-15 14:33:01,615 |   Loaded synthetic: (9738, 19, 1000) | all AD=True
+2026-06-15 14:33:08,032 | 
+  ── BL ────────────────────────────────────────
+2026-06-15 14:33:08,213 |   [BL] HC:0.704 AD:5.168 | n_HC=16474 n_AD=6736
+2026-06-15 14:34:14,089 |   [BL] Early stop ep 16
+2026-06-15 14:34:16,188 |   Youden t* = 0.5690  (sens=62.6% spec=70.3% at this threshold on val set)
+2026-06-15 14:34:16,197 |   [BL thr=0.500] Epoch:   AUC=76.0% Sens=57.8% Spec=78.8%
+2026-06-15 14:34:16,197 |   [BL thr=0.500] Patient: AUC=77.8% Sens=33.3% Spec=83.3%
+2026-06-15 14:34:16,205 |   [BL thr=0.569] Epoch:   AUC=76.0% Sens=51.9% Spec=83.4%
+2026-06-15 14:34:16,205 |   [BL thr=0.569] Patient: AUC=77.8% Sens=33.3% Spec=100.0%
+2026-06-15 14:34:16,206 | 
+  ── AUG ────────────────────────────────────────
+2026-06-15 14:34:16,212 |   [AUG] HC:1.000 AD:3.000 | n_HC=16474 n_AD=16474
+2026-06-15 14:35:19,163 |   [AUG] Early stop ep 11
+2026-06-15 14:35:21,218 |   Youden t* = 0.4459  (sens=53.4% spec=83.8% at this threshold on val set)
+2026-06-15 14:35:21,227 |   [AUG thr=0.500] Epoch:   AUC=60.9% Sens=28.9% Spec=85.1%
+2026-06-15 14:35:21,227 |   [AUG thr=0.500] Patient: AUC=66.7% Sens=33.3% Spec=83.3%
+2026-06-15 14:35:21,235 |   [AUG thr=0.446] Epoch:   AUC=60.9% Sens=46.1% Spec=71.2%
+2026-06-15 14:35:21,235 |   [AUG thr=0.446] Patient: AUC=66.7% Sens=66.7% Spec=66.7%
+2026-06-15 14:35:21,236 | 
+  ── TSTR ────────────────────────────────────────
+2026-06-15 14:35:21,241 |   [TSTR] HC:0.796 AD:4.038 | n_HC=16474 n_AD=9738
+2026-06-15 14:36:12,276 |   [TSTR] Early stop ep 11
+2026-06-15 14:36:14,277 |   Youden t* = 0.0266  (sens=48.5% spec=65.3% at this threshold on val set)
+2026-06-15 14:36:14,287 |   [TSTR thr=0.500] Epoch:   AUC=56.1% Sens=0.4% Spec=99.6%
+2026-06-15 14:36:14,287 |   [TSTR thr=0.500] Patient: AUC=83.3% Sens=0.0% Spec=100.0%
+2026-06-15 14:36:14,295 |   [TSTR thr=0.027] Epoch:   AUC=56.1% Sens=52.4% Spec=58.8%
+2026-06-15 14:36:14,295 |   [TSTR thr=0.027] Patient: AUC=83.3% Sens=100.0% Spec=16.7%
+2026-06-15 14:36:14,296 | 
+  Saved → /scratch/delmiari/thesisproject/pipeline_results/ablation_results.json
+2026-06-15 14:36:14,297 | 
+=================================================================
+2026-06-15 14:36:14,297 |   FOLD 4 / 5
+2026-06-15 14:36:14,297 | =================================================================
+2026-06-15 14:36:16,989 |   Train: 24057 (14973 HC, 9084 AD) | Val: 5534 | Test: 7405
+2026-06-15 14:36:17,794 |   Loaded synthetic: (5889, 19, 1000) | all AD=True
+2026-06-15 14:36:24,061 | 
+  ── BL ────────────────────────────────────────
+2026-06-15 14:36:24,294 |   [BL] HC:0.803 AD:3.972 | n_HC=14973 n_AD=9084
+2026-06-15 14:37:19,402 |   [BL] Early stop ep 13
+2026-06-15 14:37:21,111 |   Youden t* = 0.2369  (sens=60.6% spec=61.0% at this threshold on val set)
+2026-06-15 14:37:21,120 |   [BL thr=0.500] Epoch:   AUC=91.7% Sens=77.0% Spec=90.2%
+2026-06-15 14:37:21,120 |   [BL thr=0.500] Patient: AUC=100.0% Sens=66.7% Spec=100.0%
+2026-06-15 14:37:21,128 |   [BL thr=0.237] Epoch:   AUC=91.7% Sens=93.2% Spec=68.2%
+2026-06-15 14:37:21,128 |   [BL thr=0.237] Patient: AUC=100.0% Sens=100.0% Spec=50.0%
+2026-06-15 14:37:21,128 | 
+  ── AUG ────────────────────────────────────────
+2026-06-15 14:37:21,133 |   [AUG] HC:1.000 AD:3.000 | n_HC=14973 n_AD=14973
+2026-06-15 14:39:19,211 |   [AUG] Early stop ep 23
+2026-06-15 14:39:21,103 |   Youden t* = 0.5384  (sens=76.5% spec=87.6% at this threshold on val set)
+2026-06-15 14:39:21,112 |   [AUG thr=0.500] Epoch:   AUC=97.7% Sens=96.4% Spec=86.6%
+2026-06-15 14:39:21,113 |   [AUG thr=0.500] Patient: AUC=100.0% Sens=100.0% Spec=100.0%
+2026-06-15 14:39:21,121 |   [AUG thr=0.538] Epoch:   AUC=97.7% Sens=95.5% Spec=88.7%
+2026-06-15 14:39:21,121 |   [AUG thr=0.538] Patient: AUC=100.0% Sens=100.0% Spec=100.0%
+2026-06-15 14:39:21,121 | 
+  ── TSTR ────────────────────────────────────────
+2026-06-15 14:39:21,126 |   [TSTR] HC:0.697 AD:5.314 | n_HC=14973 n_AD=5889
+2026-06-15 14:40:02,536 |   [TSTR] Early stop ep 11
+2026-06-15 14:40:04,492 |   Youden t* = 0.0616  (sens=49.1% spec=80.6% at this threshold on val set)
+2026-06-15 14:40:04,501 |   [TSTR thr=0.500] Epoch:   AUC=66.8% Sens=2.4% Spec=99.8%
+2026-06-15 14:40:04,501 |   [TSTR thr=0.500] Patient: AUC=83.3% Sens=0.0% Spec=100.0%
+2026-06-15 14:40:04,509 |   [TSTR thr=0.062] Epoch:   AUC=66.8% Sens=56.9% Spec=66.5%
+2026-06-15 14:40:04,509 |   [TSTR thr=0.062] Patient: AUC=83.3% Sens=66.7% Spec=50.0%
+2026-06-15 14:40:04,510 | 
+  Saved → /scratch/delmiari/thesisproject/pipeline_results/ablation_results.json
+2026-06-15 14:40:04,510 | 
+=================================================================
+2026-06-15 14:40:04,510 |   FOLD 5 / 5
+2026-06-15 14:40:04,510 | =================================================================
+2026-06-15 14:40:07,182 |   Train: 24332 (18860 HC, 5472 AD) | Val: 6196 | Test: 6468
+2026-06-15 14:40:08,873 |   Loaded synthetic: (13388, 19, 1000) | all AD=True
+2026-06-15 14:40:16,190 | 
+  ── BL ────────────────────────────────────────
+2026-06-15 14:40:16,349 |   [BL] HC:0.645 AD:6.670 | n_HC=18860 n_AD=5472
+2026-06-15 14:41:16,740 |   [BL] Early stop ep 14
+2026-06-15 14:41:18,656 |   Youden t* = 0.5676  (sens=70.3% spec=60.0% at this threshold on val set)
+2026-06-15 14:41:18,665 |   [BL thr=0.500] Epoch:   AUC=86.8% Sens=94.9% Spec=53.0%
+2026-06-15 14:41:18,665 |   [BL thr=0.500] Patient: AUC=100.0% Sens=100.0% Spec=80.0%
+2026-06-15 14:41:18,673 |   [BL thr=0.568] Epoch:   AUC=86.8% Sens=86.1% Spec=69.5%
+2026-06-15 14:41:18,673 |   [BL thr=0.568] Patient: AUC=100.0% Sens=100.0% Spec=100.0%
+2026-06-15 14:41:18,673 | 
+  ── AUG ────────────────────────────────────────
+2026-06-15 14:41:18,679 |   [AUG] HC:1.000 AD:3.000 | n_HC=18860 n_AD=18860
+2026-06-15 14:42:29,465 |   [AUG] Early stop ep 11
+2026-06-15 14:42:31,396 |   Youden t* = 0.4235  (sens=83.1% spec=84.5% at this threshold on val set)
+2026-06-15 14:42:31,405 |   [AUG thr=0.500] Epoch:   AUC=90.5% Sens=82.7% Spec=85.3%
+2026-06-15 14:42:31,405 |   [AUG thr=0.500] Patient: AUC=100.0% Sens=100.0% Spec=100.0%
+2026-06-15 14:42:31,413 |   [AUG thr=0.424] Epoch:   AUC=90.5% Sens=91.6% Spec=74.7%
+2026-06-15 14:42:31,413 |   [AUG thr=0.424] Patient: AUC=100.0% Sens=100.0% Spec=100.0%
+2026-06-15 14:42:31,413 | 
+  ── TSTR ────────────────────────────────────────
+2026-06-15 14:42:31,419 |   [TSTR] HC:0.855 AD:3.613 | n_HC=18860 n_AD=13388
+2026-06-15 14:43:33,776 |   [TSTR] Early stop ep 11
+2026-06-15 14:43:35,660 |   Youden t* = 0.0075  (sens=78.5% spec=24.3% at this threshold on val set)
+2026-06-15 14:43:35,670 |   [TSTR thr=0.500] Epoch:   AUC=52.7% Sens=0.0% Spec=100.0%
+2026-06-15 14:43:35,670 |   [TSTR thr=0.500] Patient: AUC=46.7% Sens=0.0% Spec=100.0%
+2026-06-15 14:43:35,677 |   [TSTR thr=0.008] Epoch:   AUC=52.7% Sens=79.1% Spec=24.2%
+2026-06-15 14:43:35,678 |   [TSTR thr=0.008] Patient: AUC=46.7% Sens=100.0% Spec=0.0%
+2026-06-15 14:43:35,679 | 
+  Saved → /scratch/delmiari/thesisproject/pipeline_results/ablation_results.json
+2026-06-15 14:43:35,679 | 
+=================================================================
+2026-06-15 14:43:35,679 |   ABLATION SUMMARY — 5-FOLD MEAN ± STD
+2026-06-15 14:43:35,679 | =================================================================
+2026-06-15 14:43:35,679 |   Condition  Threshold    Level           AUC   Sensitivity   Specificity         F1
+2026-06-15 14:43:35,679 |   ----------------------------------------------------------------------
+2026-06-15 14:43:35,680 |   BL         fixed_0.5    epoch      80.1±7.7    65.8±18.1    77.3±12.7    70.5±7.2
+2026-06-15 14:43:35,680 |   BL         fixed_0.5    patient    90.0±10.2    60.0±24.9    92.7±9.0    77.2±11.8
+2026-06-15 14:43:35,680 |   BL         youden       epoch      80.1±7.7    74.4±21.4    68.8±20.0    68.1±7.8
+2026-06-15 14:43:35,681 |   BL         youden       patient    90.0±10.2    73.3±32.7    73.3±34.3    68.8±18.6
+2026-06-15 14:43:35,681 |   AUG        fixed_0.5    epoch      82.0±13.1    69.0±26.9    82.5±8.5    74.3±11.3
+2026-06-15 14:43:35,681 |   AUG        fixed_0.5    patient    88.9±14.1    80.0±26.7    93.3±8.2    86.6±15.2
+2026-06-15 14:43:35,682 |   AUG        youden       epoch      82.0±13.1    69.3±27.5    80.8±9.9    73.1±12.1
+2026-06-15 14:43:35,682 |   AUG        youden       patient    88.9±14.1    73.3±38.9    93.3±13.3    81.0±24.6
+2026-06-15 14:43:35,682 |   TSTR       fixed_0.5    epoch      55.6±7.5     0.8±0.9    99.9±0.1    40.3±1.7
+2026-06-15 14:43:35,682 |   TSTR       fixed_0.5    patient    63.8±18.4     0.0±0.0   100.0±0.0    39.7±0.6
+2026-06-15 14:43:35,683 |   TSTR       youden       epoch      55.6±7.5    48.4±20.5    60.2±19.2    51.6±7.0
+2026-06-15 14:43:35,683 |   TSTR       youden       patient    63.8±18.4    60.0±38.9    50.0±38.0    45.5±14.4
+2026-06-15 14:43:35,683 | 
+=================================================================
+2026-06-15 14:43:35,683 |   STATISTICAL TESTS (Wilcoxon signed-rank, N=5 folds)
+2026-06-15 14:43:35,683 | =================================================================
+2026-06-15 14:43:35,687 |   [epoch Youden] BL vs AUG:   p=0.6250 ns
+2026-06-15 14:43:35,687 |   [epoch Youden] BL vs TSTR:  p=0.0625 ns
+2026-06-15 14:43:35,687 |   [epoch Youden] AUG vs TSTR: p=0.0625 ns
+2026-06-15 14:43:35,696 |   [patient Youden] BL vs AUG:   p=1.0000 ns
+2026-06-15 14:43:35,696 |   [patient Youden] BL vs TSTR:  p=0.1250 ns
+2026-06-15 14:43:35,696 |   [patient Youden] AUG vs TSTR: p=0.1875 ns
+2026-06-15 14:43:35,697 | 
+  Summary saved → /scratch/delmiari/thesisproject/pipeline_results/ablation_summary.json
+2026-06-15 14:43:36,461 |   Plot: /scratch/delmiari/thesisproject/pipeline_results/ablation_plots/ablation_auc_comparison.png
+2026-06-15 14:43:36,937 |   Plot: /scratch/delmiari/thesisproject/pipeline_results/ablation_plots/ablation_sens_spec.png
+2026-06-15 14:43:37,534 |   Plot: /scratch/delmiari/thesisproject/pipeline_results/ablation_plots/ablation_summary_bar.png
+2026-06-15 14:43:38,223 |   Plot: /scratch/delmiari/thesisproject/pipeline_results/ablation_plots/ablation_roc.png
+2026-06-15 14:43:38,736 |   Plot: /scratch/delmiari/thesisproject/pipeline_results/ablation_plots/ablation_threshold_effect.png
+2026-06-15 14:43:38,736 | 
+  All ablation plots saved to: /scratch/delmiari/thesisproject/pipeline_results/ablation_plots

@@ -1,0 +1,366 @@
+Job 32492 started on hinton.amc.nl at Fri Jun 12 14:19:41 CEST 2026
+Working dir: /scratch/delmiari/thesisproject
+GPU: Tesla V100-PCIE-32GB
+Starting prototyp pipeline training...
+=== HINTON ENVIRONMENT CHECK ===
+Active Script Directory : /scratch/delmiari/thesisproject
+Resolved Data Directory : /scratch/delmiari/thesisproject/processed
+Files Detected in Path  : ['val_X.npy', 'subject_split.csv', 'train_subject_ids.npy', 'test_y.npy', 'X_test.npy', 'test_subject_ids.npy', 'adj_matrix.pt', 'X_train.npy', 'y_test.npy', 'val_y.npy', 'test_X.npy', 'train_y.npy', 'y_train.npy']
+================================
+
+Device: cuda
+SFREQ=500 Hz | N_SAMPLES=1000 | N_CLINICAL_BINS=80
+NUM_FOLDS=5 | AUG×3 | LATENT_DIM=128
+DDPM schedule ready (T=1000)
+2026-06-12 14:19:44,175 |  Loading pre-saved numpy partitions from Google Drive upload...
+2026-06-12 14:19:51,602 | ✓ Data partitions compiled successfully!
+2026-06-12 14:19:51,602 |   Total EEG Matrix Shape : (36996, 19, 1000)
+2026-06-12 14:19:51,602 |   Total Labels Matrix    : (36996,)
+2026-06-12 14:19:51,602 |   Total Subjects Tracked : 44 unique individuals mapped
+2026-06-12 14:19:51,605 | Data: (36996, 19, 1000) | HC=24068 | AD=12928 | Subjects=44
+2026-06-12 14:19:51,607 | 
+======================================================================
+2026-06-12 14:19:51,607 |   FOLD 1 / 5
+2026-06-12 14:19:51,607 | ======================================================================
+2026-06-12 14:19:53,748 |   Train: 23771 (14291 HC, 9480 AD) | Val: 5767 | Test: 7458
+2026-06-12 14:19:53,748 | 
+  [1a] Training baseline EEGNet (real data, class-weighted)...
+2026-06-12 14:19:53,804 |   EEGNet weights → HC:0.832  AD:3.761  (focal=on γ=2.0)
+2026-06-12 14:21:24,967 |   EEGNet early stop at epoch 23
+2026-06-12 14:21:25,554 |   [FN] 255 AD epochs misclassified as HC (9.7%)
+2026-06-12 14:21:25,593 |    ├─ Missed AD:  delta=10.851  theta=8.056  alpha=6.832  θ/α=1.179
+2026-06-12 14:21:25,632 |    ├─ Caught AD:  delta=11.000  theta=7.956  alpha=6.644  θ/α=1.197
+2026-06-12 14:21:25,632 |    └─ WHY: No dominant spectral difference — failure may be spatial/channel-level rather than global frequency content
+2026-06-12 14:21:25,632 |   Baseline → AUC=80.47%  Sens=90.30%  Spec=53.95%  F1=66.73%
+2026-06-12 14:21:25,632 |   CM → TP=2373 TN=2606 FP=2224 FN=255
+2026-06-12 14:21:25,632 | 
+  [2a] Training VMoGE (AD latent diffusion)...
+2026-06-12 14:21:25,633 |     Computing spectral representations...
+2026-06-12 14:21:39,432 |     Phase 1: Encoder warm-up (80 epochs, ALL subjects)...
+2026-06-12 14:26:33,705 |       Warm-up 20/80 | loss=0.46511
+2026-06-12 14:31:51,195 |       Warm-up 40/80 | loss=0.42016
+2026-06-12 14:36:42,956 |       Warm-up 60/80 | loss=0.42324
+2026-06-12 14:41:33,894 |       Warm-up 80/80 | loss=0.37377
+2026-06-12 14:41:33,894 |     Phase 2: Joint training (250 epochs, AD only)...
+2026-06-12 15:06:51,562 |       Joint 50/250 | diff=0.05531 | rec=0.23258
+2026-06-12 15:32:11,046 |       Joint 100/250 | diff=0.04961 | rec=0.23699
+2026-06-12 15:57:28,985 |       Joint 150/250 | diff=0.03546 | rec=0.25018
+2026-06-12 16:21:52,718 |       Joint 200/250 | diff=0.03737 | rec=0.26414
+2026-06-12 16:44:18,179 |       Joint 250/250 | diff=0.02681 | rec=0.26024
+2026-06-12 16:44:18,629 |     Z_ad shape: (9480, 128) | sigma_ad mean: 0.0366
+2026-06-12 16:44:19,070 | 
+  [3a] Quality gate — generating probe batch...
+2026-06-12 16:44:22,253 |   PSD comparison (real AD vs synthetic):
+2026-06-12 16:44:22,321 |     delta: real=10.759  synth=9.896  err=-8.0%
+2026-06-12 16:44:22,388 |     theta: real=8.142  synth=9.101  err=+11.8%
+2026-06-12 16:44:22,455 |     alpha: real=7.541  synth=7.790  err=+3.3%
+2026-06-12 16:44:22,525 |     beta : real=5.756  synth=5.996  err=+4.2%
+2026-06-12 16:44:22,596 |     gamma: real=4.452  synth=6.893  err=+54.8%  ← HIGH
+2026-06-12 16:44:22,596 |   FD=0.1811  (gate=5.0)  θ/α bias=+83.6%  AD direction=✓
+2026-06-12 16:44:22,596 | 
+  [3b] Generating 800 synthetic AD epochs (×3)...
+2026-06-12 16:44:58,279 |   [Spectral correction] Rescaling synthetic band power to match real AD...
+2026-06-12 16:44:58,279 |   Spectral bias correction:
+2026-06-12 16:44:58,360 |     delta: error=-9.8%  correction_factor=2.9394
+2026-06-12 16:44:58,436 |     theta: error=+13.8%  correction_factor=0.3290
+2026-06-12 16:44:58,512 |     alpha: error=+7.3%  correction_factor=0.5832
+2026-06-12 16:44:58,590 |     beta : error=+16.2%  correction_factor=0.4214
+2026-06-12 16:44:58,666 |     gamma: error=+76.3%  correction_factor=0.0479
+2026-06-12 16:44:59,831 |   PSD comparison (real AD vs synthetic):
+2026-06-12 16:44:59,944 |     delta: real=10.876  synth=10.663  err=-2.0%
+2026-06-12 16:45:00,057 |     theta: real=8.093  synth=7.629  err=-5.7%
+2026-06-12 16:45:00,169 |     alpha: real=7.356  synth=6.965  err=-5.3%
+2026-06-12 16:45:00,281 |     beta : real=5.542  synth=4.738  err=-14.5%
+2026-06-12 16:45:00,392 |     gamma: real=4.227  synth=3.385  err=-19.9%
+2026-06-12 16:45:00,392 |   θ/α bias after correction: -12.6% (was +83.6% before)
+2026-06-12 16:45:02,401 | 
+  [1b] Training augmented EEGNet (HC=14291  AD=10280)...
+2026-06-12 16:45:02,407 |   EEGNet weights → HC:0.860  AD:3.585  (focal=on γ=2.0)
+2026-06-12 16:46:46,964 |   EEGNet early stop at epoch 26
+2026-06-12 16:46:47,549 |   [FN] 726 AD epochs misclassified as HC (27.6%)
+2026-06-12 16:46:47,589 |    ├─ Missed AD:  delta=10.939  theta=8.165  alpha=7.052  θ/α=1.158
+2026-06-12 16:46:47,628 |    ├─ Caught AD:  delta=11.001  theta=7.958  alpha=6.639  θ/α=1.199
+2026-06-12 16:46:47,628 |    └─ WHY: No dominant spectral difference — failure may be spatial/channel-level rather than global frequency content
+2026-06-12 16:46:47,628 |   Augmented → AUC=80.01%  Sens=72.37%  Spec=69.63%  F1=69.42%
+2026-06-12 16:46:47,628 |   CM → TP=1902 TN=3363 FP=1467 FN=726
+2026-06-12 16:46:47,628 | 
+  Fold 1 ΔAUC = -0.47pp  |  FD = 0.1811
+2026-06-12 16:46:47,629 |   Saved → /scratch/delmiari/thesisproject/pipeline_results/fold_results.json
+2026-06-12 16:46:47,636 | 
+======================================================================
+2026-06-12 16:46:47,636 |   FOLD 2 / 5
+2026-06-12 16:46:47,637 | ======================================================================
+2026-06-12 16:46:50,707 |   Train: 23238 (15959 HC, 7279 AD) | Val: 5726 | Test: 8032
+2026-06-12 16:46:50,707 | 
+  [1a] Training baseline EEGNet (real data, class-weighted)...
+2026-06-12 16:46:50,712 |   EEGNet weights → HC:0.728  AD:4.789  (focal=on γ=2.0)
+2026-06-12 16:47:36,756 |   EEGNet early stop at epoch 12
+2026-06-12 16:47:37,391 |   [FN] 1448 AD epochs misclassified as HC (45.4%)
+2026-06-12 16:47:37,431 |    ├─ Missed AD:  delta=10.882  theta=8.087  alpha=7.389  θ/α=1.094
+2026-06-12 16:47:37,471 |    ├─ Caught AD:  delta=11.068  theta=7.828  alpha=6.528  θ/α=1.199
+2026-06-12 16:47:37,471 |    └─ WHY: No dominant spectral difference — failure may be spatial/channel-level rather than global frequency content
+2026-06-12 16:47:37,471 |   Baseline → AUC=67.23%  Sens=54.57%  Spec=72.94%  F1=63.84%
+2026-06-12 16:47:37,471 |   CM → TP=1739 TN=3534 FP=1311 FN=1448
+2026-06-12 16:47:37,471 | 
+  [2a] Training VMoGE (AD latent diffusion)...
+2026-06-12 16:47:37,471 |     Computing spectral representations...
+2026-06-12 16:47:49,751 |     Phase 1: Encoder warm-up (80 epochs, ALL subjects)...
+2026-06-12 16:52:39,733 |       Warm-up 20/80 | loss=0.47536
+2026-06-12 16:57:51,698 |       Warm-up 40/80 | loss=0.34447
+2026-06-12 17:02:40,688 |       Warm-up 60/80 | loss=0.37383
+2026-06-12 17:07:31,089 |       Warm-up 80/80 | loss=0.38869
+2026-06-12 17:07:31,089 |     Phase 2: Joint training (250 epochs, AD only)...
+2026-06-12 17:26:52,473 |       Joint 50/250 | diff=0.03423 | rec=0.22525
+2026-06-12 17:46:15,679 |       Joint 100/250 | diff=0.03314 | rec=0.21018
+2026-06-12 18:05:39,569 |       Joint 150/250 | diff=0.04744 | rec=0.21161
+2026-06-12 18:25:03,086 |       Joint 200/250 | diff=0.02459 | rec=0.21326
+2026-06-12 18:44:23,652 |       Joint 250/250 | diff=0.03429 | rec=0.21428
+2026-06-12 18:44:23,987 |     Z_ad shape: (7279, 128) | sigma_ad mean: 0.0270
+2026-06-12 18:44:24,486 | 
+  [3a] Quality gate — generating probe batch...
+2026-06-12 18:44:28,163 |   PSD comparison (real AD vs synthetic):
+2026-06-12 18:44:28,233 |     delta: real=11.019  synth=9.973  err=-9.5%
+2026-06-12 18:44:28,320 |     theta: real=7.938  synth=9.078  err=+14.4%
+2026-06-12 18:44:28,394 |     alpha: real=7.213  synth=7.928  err=+9.9%
+2026-06-12 18:44:28,465 |     beta : real=5.717  synth=6.349  err=+11.0%
+2026-06-12 18:44:28,534 |     gamma: real=4.687  synth=6.743  err=+43.9%  ← HIGH
+2026-06-12 18:44:28,534 |   FD=0.1359  (gate=5.0)  θ/α bias=+73.4%  AD direction=✓
+2026-06-12 18:44:28,534 | 
+  [3b] Generating 800 synthetic AD epochs (×3)...
+2026-06-12 18:45:09,108 |   [Spectral correction] Rescaling synthetic band power to match real AD...
+2026-06-12 18:45:09,108 |   Spectral bias correction:
+2026-06-12 18:45:09,193 |     delta: error=-9.2%  correction_factor=2.7512
+2026-06-12 18:45:09,269 |     theta: error=+13.0%  correction_factor=0.3508
+2026-06-12 18:45:09,348 |     alpha: error=+7.2%  correction_factor=0.5843
+2026-06-12 18:45:09,427 |     beta : error=+13.3%  correction_factor=0.4647
+2026-06-12 18:45:09,507 |     gamma: error=+49.5%  correction_factor=0.0978
+2026-06-12 18:45:10,733 |   PSD comparison (real AD vs synthetic):
+2026-06-12 18:45:10,848 |     delta: real=11.010  synth=10.668  err=-3.1%
+2026-06-12 18:45:10,968 |     theta: real=7.989  synth=7.708  err=-3.5%
+2026-06-12 18:45:11,084 |     alpha: real=7.220  synth=7.026  err=-2.7%
+2026-06-12 18:45:11,200 |     beta : real=5.758  synth=5.247  err=-8.9%
+2026-06-12 18:45:11,317 |     gamma: real=4.772  synth=4.107  err=-13.9%
+2026-06-12 18:45:11,318 |   θ/α bias after correction: -0.8% (was +73.4% before)
+2026-06-12 18:45:13,627 | 
+  [1b] Training augmented EEGNet (HC=15959  AD=8079)...
+2026-06-12 18:45:13,633 |   EEGNet weights → HC:0.753  AD:4.463  (focal=on γ=2.0)
+2026-06-12 18:46:29,381 |   EEGNet early stop at epoch 19
+2026-06-12 18:46:30,018 |   [FN] 2657 AD epochs misclassified as HC (83.4%)
+2026-06-12 18:46:30,060 |    ├─ Missed AD:  delta=10.884  theta=8.071  alpha=7.356  θ/α=1.097
+2026-06-12 18:46:30,100 |    ├─ Caught AD:  delta=11.070  theta=7.575  alpha=6.244  θ/α=1.213
+2026-06-12 18:46:30,100 |    └─ WHY: No dominant spectral difference — failure may be spatial/channel-level rather than global frequency content
+2026-06-12 18:46:30,100 |   Augmented → AUC=69.99%  Sens=16.63%  Spec=95.73%  F1=51.71%
+2026-06-12 18:46:30,100 |   CM → TP=530 TN=4638 FP=207 FN=2657
+2026-06-12 18:46:30,100 | 
+  Fold 2 ΔAUC = +2.77pp  |  FD = 0.1359
+2026-06-12 18:46:30,101 |   Saved → /scratch/delmiari/thesisproject/pipeline_results/fold_results.json
+2026-06-12 18:46:30,109 | 
+======================================================================
+2026-06-12 18:46:30,110 |   FOLD 3 / 5
+2026-06-12 18:46:30,110 | ======================================================================
+2026-06-12 18:46:33,327 |   Train: 23210 (16474 HC, 6736 AD) | Val: 6153 | Test: 7633
+2026-06-12 18:46:33,327 | 
+  [1a] Training baseline EEGNet (real data, class-weighted)...
+2026-06-12 18:46:33,332 |   EEGNet weights → HC:0.704  AD:5.168  (focal=on γ=2.0)
+2026-06-12 18:47:16,004 |   EEGNet early stop at epoch 11
+2026-06-12 18:47:16,764 |   [FN] 92 AD epochs misclassified as HC (3.7%)
+2026-06-12 18:47:16,805 |    ├─ Missed AD:  delta=10.977  theta=7.683  alpha=6.473  θ/α=1.187
+2026-06-12 18:47:16,852 |    ├─ Caught AD:  delta=10.944  theta=8.217  alpha=6.864  θ/α=1.197
+2026-06-12 18:47:16,852 |    └─ WHY: No dominant spectral difference — failure may be spatial/channel-level rather than global frequency content
+2026-06-12 18:47:16,852 |   Baseline → AUC=66.32%  Sens=96.29%  Spec=4.16%  F1=28.30%
+2026-06-12 18:47:16,852 |   CM → TP=2391 TN=214 FP=4936 FN=92
+2026-06-12 18:47:16,852 | 
+  [2a] Training VMoGE (AD latent diffusion)...
+2026-06-12 18:47:16,853 |     Computing spectral representations...
+2026-06-12 18:47:29,595 |     Phase 1: Encoder warm-up (80 epochs, ALL subjects)...
+2026-06-12 18:52:22,751 |       Warm-up 20/80 | loss=0.42960
+2026-06-12 18:57:37,369 |       Warm-up 40/80 | loss=0.33043
+2026-06-12 19:02:27,852 |       Warm-up 60/80 | loss=0.42080
+2026-06-12 19:07:18,545 |       Warm-up 80/80 | loss=0.37644
+2026-06-12 19:07:18,545 |     Phase 2: Joint training (250 epochs, AD only)...
+2026-06-12 19:23:25,991 |       Joint 50/250 | diff=0.04293 | rec=0.22683
+2026-06-12 19:41:27,180 |       Joint 100/250 | diff=0.03395 | rec=0.21238
+2026-06-12 19:59:27,548 |       Joint 150/250 | diff=0.02892 | rec=0.22877
+2026-06-12 20:17:27,981 |       Joint 200/250 | diff=0.03565 | rec=0.22895
+2026-06-12 20:35:28,864 |       Joint 250/250 | diff=0.05029 | rec=0.20762
+2026-06-12 20:35:29,185 |     Z_ad shape: (6736, 128) | sigma_ad mean: 0.0291
+2026-06-12 20:35:29,558 | 
+  [3a] Quality gate — generating probe batch...
+2026-06-12 20:35:33,284 |   PSD comparison (real AD vs synthetic):
+2026-06-12 20:35:33,358 |     delta: real=10.759  synth=9.839  err=-8.5%
+2026-06-12 20:35:33,442 |     theta: real=8.142  synth=8.835  err=+8.5%
+2026-06-12 20:35:33,517 |     alpha: real=7.541  synth=7.357  err=-2.4%
+2026-06-12 20:35:33,593 |     beta : real=5.756  synth=6.036  err=+4.9%
+2026-06-12 20:35:33,668 |     gamma: real=4.452  synth=6.913  err=+55.3%  ← HIGH
+2026-06-12 20:35:33,669 |   FD=0.1715  (gate=5.0)  θ/α bias=+119.8%  AD direction=✓
+2026-06-12 20:35:33,669 | 
+  [3b] Generating 800 synthetic AD epochs (×3)...
+2026-06-12 20:36:14,193 |   [Spectral correction] Rescaling synthetic band power to match real AD...
+2026-06-12 20:36:14,193 |   Spectral bias correction:
+2026-06-12 20:36:14,284 |     delta: error=-11.6%  correction_factor=3.5965
+2026-06-12 20:36:14,368 |     theta: error=+7.9%  correction_factor=0.5312
+2026-06-12 20:36:14,453 |     alpha: error=-0.3%  correction_factor=1.0246
+2026-06-12 20:36:14,535 |     beta : error=+16.0%  correction_factor=0.4268
+2026-06-12 20:36:14,633 |     gamma: error=+80.7%  correction_factor=0.0402
+2026-06-12 20:36:15,938 |   PSD comparison (real AD vs synthetic):
+2026-06-12 20:36:16,060 |     delta: real=10.876  synth=10.555  err=-3.0%
+2026-06-12 20:36:16,180 |     theta: real=8.093  synth=7.492  err=-7.4%
+2026-06-12 20:36:16,316 |     alpha: real=7.356  synth=6.790  err=-7.7%
+2026-06-12 20:36:16,439 |     beta : real=5.542  synth=4.592  err=-17.1%
+2026-06-12 20:36:16,598 |     gamma: real=4.227  synth=3.227  err=-23.7%  ← HIGH
+2026-06-12 20:36:16,598 |   θ/α bias after correction: -7.6% (was +119.8% before)
+2026-06-12 20:36:18,782 | 
+  [1b] Training augmented EEGNet (HC=16474  AD=7536)...
+2026-06-12 20:36:18,788 |   EEGNet weights → HC:0.729  AD:4.779  (focal=on γ=2.0)
+2026-06-12 20:37:10,604 |   EEGNet early stop at epoch 13
+2026-06-12 20:37:11,177 |   [FN] 732 AD epochs misclassified as HC (29.5%)
+2026-06-12 20:37:11,217 |    ├─ Missed AD:  delta=10.988  theta=8.052  alpha=6.636  θ/α=1.213
+2026-06-12 20:37:11,256 |    ├─ Caught AD:  delta=10.947  theta=8.196  alpha=6.852  θ/α=1.196
+2026-06-12 20:37:11,256 |    └─ WHY: No dominant spectral difference — failure may be spatial/channel-level rather than global frequency content
+2026-06-12 20:37:11,256 |   Augmented → AUC=80.31%  Sens=70.52%  Spec=75.98%  F1=71.95%
+2026-06-12 20:37:11,256 |   CM → TP=1751 TN=3913 FP=1237 FN=732
+2026-06-12 20:37:11,256 | 
+  Fold 3 ΔAUC = +13.99pp  |  FD = 0.1715
+2026-06-12 20:37:11,256 |   Saved → /scratch/delmiari/thesisproject/pipeline_results/fold_results.json
+2026-06-12 20:37:11,265 | 
+======================================================================
+2026-06-12 20:37:11,265 |   FOLD 4 / 5
+2026-06-12 20:37:11,265 | ======================================================================
+2026-06-12 20:37:14,414 |   Train: 24057 (14973 HC, 9084 AD) | Val: 5534 | Test: 7405
+2026-06-12 20:37:14,414 | 
+  [1a] Training baseline EEGNet (real data, class-weighted)...
+2026-06-12 20:37:14,420 |   EEGNet weights → HC:0.803  AD:3.972  (focal=on γ=2.0)
+2026-06-12 20:38:05,449 |   EEGNet early stop at epoch 13
+2026-06-12 20:38:06,375 |   [FN] 1663 AD epochs misclassified as HC (69.8%)
+2026-06-12 20:38:06,417 |    ├─ Missed AD:  delta=11.065  theta=7.969  alpha=6.563  θ/α=1.214
+2026-06-12 20:38:06,459 |    ├─ Caught AD:  delta=10.915  theta=8.389  alpha=6.944  θ/α=1.208
+2026-06-12 20:38:06,459 |    └─ WHY: No dominant spectral difference — failure may be spatial/channel-level rather than global frequency content
+2026-06-12 20:38:06,459 |   Baseline → AUC=76.18%  Sens=30.18%  Spec=97.83%  F1=64.76%
+2026-06-12 20:38:06,459 |   CM → TP=719 TN=4914 FP=109 FN=1663
+2026-06-12 20:38:06,459 | 
+  [2a] Training VMoGE (AD latent diffusion)...
+2026-06-12 20:38:06,459 |     Computing spectral representations...
+2026-06-12 20:38:19,696 |     Phase 1: Encoder warm-up (80 epochs, ALL subjects)...
+2026-06-12 20:43:21,822 |       Warm-up 20/80 | loss=0.48216
+2026-06-12 20:48:48,532 |       Warm-up 40/80 | loss=0.45421
+2026-06-12 20:53:49,799 |       Warm-up 60/80 | loss=0.37185
+2026-06-12 20:58:51,810 |       Warm-up 80/80 | loss=0.39562
+2026-06-12 20:58:51,810 |     Phase 2: Joint training (250 epochs, AD only)...
+2026-06-12 21:23:07,930 |       Joint 50/250 | diff=0.06936 | rec=0.21365
+2026-06-12 21:45:03,209 |       Joint 100/250 | diff=0.03782 | rec=0.22088
+2026-06-12 22:06:31,678 |       Joint 150/250 | diff=0.05648 | rec=0.25889
+2026-06-12 22:28:00,264 |       Joint 200/250 | diff=0.03686 | rec=0.24872
+2026-06-12 22:52:04,784 |       Joint 250/250 | diff=0.02424 | rec=0.22783
+2026-06-12 22:52:05,220 |     Z_ad shape: (9084, 128) | sigma_ad mean: 0.0355
+2026-06-12 22:52:05,645 | 
+  [3a] Quality gate — generating probe batch...
+2026-06-12 22:52:08,950 |   PSD comparison (real AD vs synthetic):
+2026-06-12 22:52:09,019 |     delta: real=10.759  synth=9.882  err=-8.1%
+2026-06-12 22:52:09,087 |     theta: real=8.142  synth=8.852  err=+8.7%
+2026-06-12 22:52:09,154 |     alpha: real=7.541  synth=7.554  err=+0.2%
+2026-06-12 22:52:09,223 |     beta : real=5.756  synth=6.085  err=+5.7%
+2026-06-12 22:52:09,291 |     gamma: real=4.452  synth=6.867  err=+54.2%  ← HIGH
+2026-06-12 22:52:09,292 |   FD=0.1704  (gate=5.0)  θ/α bias=+89.2%  AD direction=✓
+2026-06-12 22:52:09,292 | 
+  [3b] Generating 800 synthetic AD epochs (×3)...
+2026-06-12 22:52:49,746 |   [Spectral correction] Rescaling synthetic band power to match real AD...
+2026-06-12 22:52:49,747 |   Spectral bias correction:
+2026-06-12 22:52:49,829 |     delta: error=-9.4%  correction_factor=2.8262
+2026-06-12 22:52:49,907 |     theta: error=+12.3%  correction_factor=0.3727
+2026-06-12 22:52:49,985 |     alpha: error=+4.3%  correction_factor=0.7262
+2026-06-12 22:52:50,062 |     beta : error=+20.1%  correction_factor=0.3417
+2026-06-12 22:52:50,140 |     gamma: error=+78.6%  correction_factor=0.0437
+2026-06-12 22:52:51,323 |   PSD comparison (real AD vs synthetic):
+2026-06-12 22:52:51,437 |     delta: real=10.876  synth=10.626  err=-2.3%
+2026-06-12 22:52:51,550 |     theta: real=8.093  synth=7.626  err=-5.8%
+2026-06-12 22:52:51,663 |     alpha: real=7.356  synth=6.865  err=-6.7%
+2026-06-12 22:52:51,792 |     beta : real=5.542  synth=4.677  err=-15.6%
+2026-06-12 22:52:51,910 |     gamma: real=4.227  synth=3.316  err=-21.5%  ← HIGH
+2026-06-12 22:52:51,911 |   θ/α bias after correction: -5.3% (was +89.2% before)
+2026-06-12 22:52:54,136 | 
+  [1b] Training augmented EEGNet (HC=14973  AD=9884)...
+2026-06-12 22:52:54,142 |   EEGNet weights → HC:0.830  AD:3.772  (focal=on γ=2.0)
+2026-06-12 22:53:55,634 |   EEGNet early stop at epoch 15
+2026-06-12 22:53:56,191 |   [FN] 1672 AD epochs misclassified as HC (70.2%)
+2026-06-12 22:53:56,231 |    ├─ Missed AD:  delta=11.065  theta=7.969  alpha=6.563  θ/α=1.214
+2026-06-12 22:53:56,270 |    ├─ Caught AD:  delta=10.936  theta=8.587  alpha=7.152  θ/α=1.201
+2026-06-12 22:53:56,270 |    └─ WHY: No dominant spectral difference — failure may be spatial/channel-level rather than global frequency content
+2026-06-12 22:53:56,270 |   Augmented → AUC=79.39%  Sens=29.81%  Spec=98.71%  F1=65.04%
+2026-06-12 22:53:56,270 |   CM → TP=710 TN=4958 FP=65 FN=1672
+2026-06-12 22:53:56,270 | 
+  Fold 4 ΔAUC = +3.21pp  |  FD = 0.1704
+2026-06-12 22:53:56,270 |   Saved → /scratch/delmiari/thesisproject/pipeline_results/fold_results.json
+2026-06-12 22:53:56,285 | 
+======================================================================
+2026-06-12 22:53:56,285 |   FOLD 5 / 5
+2026-06-12 22:53:56,285 | ======================================================================
+2026-06-12 22:53:59,294 |   Train: 24332 (18860 HC, 5472 AD) | Val: 6196 | Test: 6468
+2026-06-12 22:53:59,294 | 
+  [1a] Training baseline EEGNet (real data, class-weighted)...
+2026-06-12 22:53:59,299 |   EEGNet weights → HC:0.645  AD:6.670  (focal=on γ=2.0)
+2026-06-12 22:54:43,527 |   EEGNet early stop at epoch 11
+2026-06-12 22:54:44,097 |   Baseline → AUC=73.58%  Sens=100.00%  Spec=0.05%  F1=25.84%
+2026-06-12 22:54:44,097 |   CM → TP=2248 TN=2 FP=4218 FN=0
+2026-06-12 22:54:44,097 | 
+  [2a] Training VMoGE (AD latent diffusion)...
+2026-06-12 22:54:44,098 |     Computing spectral representations...
+2026-06-12 22:54:56,352 |     Phase 1: Encoder warm-up (80 epochs, ALL subjects)...
+2026-06-12 23:00:01,312 |       Warm-up 20/80 | loss=0.44719
+2026-06-12 23:05:29,220 |       Warm-up 40/80 | loss=0.39957
+2026-06-12 23:10:33,606 |       Warm-up 60/80 | loss=0.38894
+2026-06-12 23:15:37,178 |       Warm-up 80/80 | loss=0.39431
+2026-06-12 23:15:37,178 |     Phase 2: Joint training (250 epochs, AD only)...
+2026-06-12 23:30:15,090 |       Joint 50/250 | diff=0.05205 | rec=0.20615
+2026-06-12 23:44:52,781 |       Joint 100/250 | diff=0.03013 | rec=0.22464
+2026-06-12 23:59:29,798 |       Joint 150/250 | diff=0.03858 | rec=0.23133
+2026-06-13 00:14:06,926 |       Joint 200/250 | diff=0.03326 | rec=0.23631
+2026-06-13 00:28:44,069 |       Joint 250/250 | diff=0.04383 | rec=0.20721
+2026-06-13 00:28:44,316 |     Z_ad shape: (5472, 128) | sigma_ad mean: 0.0247
+2026-06-13 00:28:44,668 | 
+  [3a] Quality gate — generating probe batch...
+2026-06-13 00:28:48,367 |   PSD comparison (real AD vs synthetic):
+2026-06-13 00:28:48,439 |     delta: real=10.943  synth=9.028  err=-17.5%
+2026-06-13 00:28:48,515 |     theta: real=8.225  synth=7.280  err=-11.5%
+2026-06-13 00:28:48,591 |     alpha: real=6.926  synth=5.671  err=-18.1%
+2026-06-13 00:28:48,666 |     beta : real=5.915  synth=5.078  err=-14.1%
+2026-06-13 00:28:48,740 |     gamma: real=5.504  synth=6.796  err=+23.5%  ← HIGH
+2026-06-13 00:28:48,740 |   FD=0.1455  (gate=5.0)  θ/α bias=+76.1%  AD direction=✓
+2026-06-13 00:28:48,740 | 
+  [3b] Generating 800 synthetic AD epochs (×3)...
+2026-06-13 00:29:29,217 |   [Spectral correction] Rescaling synthetic band power to match real AD...
+2026-06-13 00:29:29,217 |   Spectral bias correction:
+2026-06-13 00:29:29,296 |     delta: error=-18.2%  correction_factor=7.3882
+2026-06-13 00:29:29,372 |     theta: error=-10.6%  correction_factor=2.4034
+2026-06-13 00:29:29,447 |     alpha: error=-16.5%  correction_factor=3.1061
+2026-06-13 00:29:29,522 |     beta : error=-8.5%  correction_factor=1.6474
+2026-06-13 00:29:29,599 |     gamma: error=+30.4%  correction_factor=0.1866
+2026-06-13 00:29:30,779 |   PSD comparison (real AD vs synthetic):
+2026-06-13 00:29:30,892 |     delta: real=10.950  synth=10.335  err=-5.6%
+2026-06-13 00:29:31,004 |     theta: real=8.268  synth=7.553  err=-8.7%
+2026-06-13 00:29:31,131 |     alpha: real=6.931  synth=6.075  err=-12.4%
+2026-06-13 00:29:31,244 |     beta : real=5.948  synth=5.096  err=-14.3%
+2026-06-13 00:29:31,357 |     gamma: real=5.597  synth=4.661  err=-16.7%
+2026-06-13 00:29:31,358 |   θ/α bias after correction: +60.7% (was +76.1% before)
+2026-06-13 00:29:33,617 | 
+  [1b] Training augmented EEGNet (HC=18860  AD=6272)...
+2026-06-13 00:29:33,622 |   EEGNet weights → HC:0.666  AD:6.011  (focal=on γ=2.0)
+2026-06-13 00:30:19,385 |   EEGNet early stop at epoch 11
+2026-06-13 00:30:19,918 |   [FN] 5 AD epochs misclassified as HC (0.2%)
+2026-06-13 00:30:19,921 |    ├─ Missed AD:  delta=10.770  theta=7.862  alpha=6.730  θ/α=1.168
+2026-06-13 00:30:19,962 |    ├─ Caught AD:  delta=11.008  theta=7.947  alpha=7.119  θ/α=1.116
+2026-06-13 00:30:19,962 |    └─ WHY: No dominant spectral difference — failure may be spatial/channel-level rather than global frequency content
+2026-06-13 00:30:19,962 |   Augmented → AUC=62.18%  Sens=99.78%  Spec=1.85%  F1=27.79%
+2026-06-13 00:30:19,962 |   CM → TP=2243 TN=78 FP=4142 FN=5
+2026-06-13 00:30:19,962 | 
+  Fold 5 ΔAUC = -11.40pp  |  FD = 0.1455
+2026-06-13 00:30:19,963 |   Saved → /scratch/delmiari/thesisproject/pipeline_results/fold_results.json
+2026-06-13 00:30:19,971 | 
+======================================================================
+2026-06-13 00:30:19,971 |   FINAL SUMMARY (5 fold(s))
+2026-06-13 00:30:19,971 | ======================================================================
+2026-06-13 00:30:19,971 |   AUC          | BL=72.76±5.37  | AUG=74.38±7.21  | Δ=+1.62pp
+2026-06-13 00:30:19,971 |   SENSITIVITY  | BL=74.27±27.33  | AUG=57.82±30.38  | Δ=-16.45pp
+2026-06-13 00:30:19,972 |   SPECIFICITY  | BL=45.79±38.31  | AUG=68.38±35.08  | Δ=+22.59pp
+2026-06-13 00:30:19,972 |   F1_MACRO     | BL=49.89±18.68  | AUG=57.18±16.27  | Δ=+7.29pp
+2026-06-13 00:30:20,814 | Pipeline complete.
+Job finished at Sat Jun 13 00:30:22 CEST 2026
